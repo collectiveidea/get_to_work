@@ -1,10 +1,7 @@
 module GetToWork
   KEYCHAIN_PREFIX = "GetToWork"
-  class Keychain
-    def initialize(cli: nil)
-      @cli = cli
-    end
 
+  class Keychain
     def update(opts={})
       relative_service_name = opts[:service]
       @absolute_service_name = absolute_service_name(relative_service_name)
@@ -31,7 +28,6 @@ module GetToWork
       )
 
       if item = keychain_items.first
-        item.open
         item.account = opts[:account]
         item.password = opts[:password]
       else
@@ -41,7 +37,6 @@ module GetToWork
     end
 
     def create_keychain_item(opts={})
-      @cli.say "Creating new Keychain item: #{opts[:service]}"
       ::Keychain.generic_passwords.create(opts)
     end
   end

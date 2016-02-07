@@ -4,28 +4,33 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
   KEYCHAIN_SERVICE = "GetToWork::PivotalTracker"
 
   def run(opts={})
-    prompt_for_credentials
+    pt = GetToWork::Service::PivotalTracker.new
+
+    @cli.say "\n\nStep #{pt.display_name} Setup", :green
+    @cli.say "-----------------------------", :green
+
+    prompt_for_login(pt)
+    prompt_select_project(pt)
   end
 
-  def prompt_for_credentials
-    @cli.say "\n\nStep 1: Pivotal Tracker Setup", :green
-    @cli.say "-----------------------------", :green
-    pt_username = @cli.ask "Pivotal Tracker Username:"
-    pt_password = @cli.ask "Pivotal Tracker Password:", echo: "-"
+  def prompt_for_login(service)
+    username = @cli.ask "#{service.display_name} Username:"
+    password = @cli.ask "#{service.display_name} Password:"
 
-    @cli.say "\n\nAuthenticating with Pivotal Tracker...", :magenta
+    @cli.say "\n\nAuthenticating with #{service.display_name}...", :magenta
 
     begin
-      token = PivotalTracker::Client.token(pt_username, pt_password)
+      service.authenticate(username: username, password: password)
+      puts service.inspect
     rescue RestClient::Unauthorized
-      @cli.say "Could not authenticate with Pivotal Tracker", :red
+      @cli.say "Could not authenticate with #{service.display_name}", :red
       exit(1)
     end
 
-    keychain_item = GetToWork::Keychain.new(cli: @cli).update(
-      service: "PivotalTracker",
-      account: pt_username,
-      password: token
-    )
+    service.update_keychain(account: username)
+  end
+
+  def prompt_select_project(service)
+    service.get_projects
   end
 end

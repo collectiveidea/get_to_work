@@ -13,34 +13,19 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
     pt_username = @cli.ask "Pivotal Tracker Username:"
     pt_password = @cli.ask "Pivotal Tracker Password:"
 
-    @cli.say "Authenticating with Pivotal Tracker...", :magenta
-    token = PivotalTracker::Client.token(pt_username, pt_password)
-    
-    keychain_item = update_or_create_keychain_item(
-      service: KEYCHAIN_SERVICE,
+    @cli.say "\n\nAuthenticating with Pivotal Tracker...", :magenta
+
+    begin
+      token = PivotalTracker::Client.token(pt_username, pt_password)
+    rescue RestClient::Unauthorized
+      @cli.say "Could not authenticate with Pivotal Tracker", :red
+      exit(1)
+    end
+
+    keychain_item = GetToWork::Keychain.new(cli: @cli).update(
+      service: "PivotalTracker",
       account: pt_username,
       password: token
     )
   end
-
-  def update_or_create_keychain_item(opts={})
-    keychain_items = Keychain.generic_passwords.where(
-      service: opts[:service]
-    )
-
-    if item = keychain_items.first
-      item.open
-      item.account = opts[:account]
-      item.password = opts[:password]
-    else
-      create_keychain_item(opts)
-    end
-
-  end
-
-  def create_keychain_item(opts={})
-    @cli.say "Creating new Keychain item: #{opts[:service]}"
-    Keychain.generic_passwords.create(opts)
-  end
-
 end

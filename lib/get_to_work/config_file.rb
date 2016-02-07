@@ -1,12 +1,14 @@
 require "yaml"
+require "singleton"
 
 class GetToWork::ConfigFile
+  include Singleton
 
-  def self.find(path: self.path)
-    new(path)
+  def initialize
+    setup_data(self.class.path)
   end
 
-  def initialize(path)
+  def setup_data(path)
     @data = begin
       YAML.load_file(path)
     rescue Errno::ENOENT

@@ -20,7 +20,7 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
   end
 
   def check_for_config_file
-    @config_file = GetToWork::ConfigFile.find()
+    @config_file = GetToWork::ConfigFile.instance
 
     if @config_file
       unless @cli.yes?("Would you like to overwrite your existing #{GetToWork::ConfigFile.filename} file? [y/N]", :green)

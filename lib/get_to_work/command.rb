@@ -1,3 +1,5 @@
+require "keychain"
+
 module GetToWork
   class Command
 

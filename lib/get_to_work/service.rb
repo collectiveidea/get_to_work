@@ -12,4 +12,8 @@ class GetToWork::Service
       password: @api_token
     )
   end
+
+  def keychain
+    GetToWork::Keychain.find(service: self.name)
+  end
 end

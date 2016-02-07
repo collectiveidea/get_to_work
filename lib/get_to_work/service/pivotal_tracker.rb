@@ -8,6 +8,10 @@ class GetToWork::Service::PivotalTracker < GetToWork::Service
     @api_token = ::PivotalTracker::Client.token(username, password)
   end
 
+  def api_token
+    @api_token ||= keychain
+  end
+
   def get_projects
     ::PivotalTracker::Project.all
   end

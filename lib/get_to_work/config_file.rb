@@ -18,6 +18,22 @@ class GetToWork::ConfigFile
     puts @data
   end
 
+  def [](key)
+    @data[key]
+  end
+
+  def []=(key, value)
+    @data[key] = value
+  end
+
+  def self.save
+    instance.save
+  end
+
+  def save
+    File.open(self.class.path, 'w') {|f| f.write YAML.dump(@data) } #Store
+  end
+
   def self.exist?
     File.exist? path
   end

@@ -1,5 +1,6 @@
 class GetToWork::Service::PivotalTracker < GetToWork::Service
   def initialize
+    @yaml_key = "pivotal_tracker"
     @name = "PivotalTracker"
     @display_name = "Pivotal Tracker"
   end

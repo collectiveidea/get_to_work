@@ -9,14 +9,17 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
 
     pt = GetToWork::Service::PivotalTracker.new
 
-    @cli.say "\n\nStep #{pt.display_name} Setup", :magenta
+    @cli.say "\n\nStep #1 #{pt.display_name} Setup", :magenta
     @cli.say "-----------------------------", :magenta
 
     if pt.api_token.nil?
       prompt_for_login(pt)
     end
 
-    prompt_select_project(pt)
+    project = prompt_select_project(pt)
+    pt.save_config("project" => project.id)
+
+    GetToWork::ConfigFile.save
   end
 
   def check_for_config_file
@@ -55,8 +58,5 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
       :green,
       limited_to: project_options.menu_limit
     )
-
-    require "pry"
-    binding.pry
   end
 end

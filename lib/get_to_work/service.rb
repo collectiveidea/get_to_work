@@ -1,5 +1,5 @@
 class GetToWork::Service
-  attr_reader :name, :api_token
+  attr_reader :name, :api_token, :yaml_key
   attr_accessor :display_name
 
   def update_keychain(account:)
@@ -15,5 +15,10 @@ class GetToWork::Service
 
   def keychains
     GetToWork::Keychain.find(service: self.name)
+  end
+
+  def save_config(opts)
+    config_file = GetToWork::ConfigFile.instance
+    config_file[self.yaml_key] = opts
   end
 end

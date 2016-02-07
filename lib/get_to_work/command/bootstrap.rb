@@ -34,11 +34,16 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
   end
 
   def prompt_select_project(service)
-    project_options = service.projects
+    project_options = GetToWork::MenuPresenter.with_collection(service.projects)
 
-    @cli.print_table(project_options.table)
+    selected_project = @cli.menu_ask(
+      "\nSelect a #{service.display_name} project:",
+      project_options,
+      :green,
+      limited_to: project_options.menu_limit
+    )
 
-    choice = @cli.ask("\nSelect a #{service.display_name} project:", :green, limited_to: project_options.menu_limit)
-    puts project_options.item_for(choice: choice)
+    require "pry"
+    binding.pry
   end
 end

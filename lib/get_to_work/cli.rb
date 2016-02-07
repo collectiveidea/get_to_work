@@ -1,7 +1,7 @@
-require "thor"
-
 module GetToWork
   class CLI < Thor
+    include GetToWork::Menu
+    
     desc "bootstrap", "creates .gtw configuration for your current working directory"
     def bootstrap
       GetToWork::Command::Bootstrap.run(cli: self)

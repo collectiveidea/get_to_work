@@ -18,7 +18,7 @@ class GetToWork::Service::PivotalTracker < GetToWork::Service
   end
 
   def projects
-    @projects ||= GetToWork::ProjectPresenter.with_collection(get_projects)
+    @projects ||= get_projects
   end
 
   def get_projects

@@ -6,15 +6,28 @@ module GetToWork
     end
 
     def update(opts={})
-      opts[:service] = "#{KEYCHAIN_PREFIX}::#{opts[:service]}"
+      relative_service_name = opts[:service]
+      @absolute_service_name = absolute_service_name(relative_service_name)
+
       update_or_create_keychain_item(opts)
+    end
+
+    def find(service:)
+      ::Keychain.generic_passwords.where(
+        service: service
+      )
     end
 
     private
 
+    def absolute_service_name(relative_name)
+      "#{KEYCHAIN_PREFIX}::#{relative_name}"
+    end
+
     def update_or_create_keychain_item(opts={})
-      keychain_items = ::Keychain.generic_passwords.where(
-        service: opts[:service]
+      keychain_items = find(service: opts[:service])
+      ::Keychain.generic_passwords.where(
+        service: @absolute_service_name
       )
 
       if item = keychain_items.first

@@ -11,7 +11,7 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
     @cli.say "\n\nStep 1: Pivotal Tracker Setup", :green
     @cli.say "-----------------------------", :green
     pt_username = @cli.ask "Pivotal Tracker Username:"
-    pt_password = @cli.ask "Pivotal Tracker Password:"
+    pt_password = @cli.ask "Pivotal Tracker Password:", echo: "-"
 
     @cli.say "\n\nAuthenticating with Pivotal Tracker...", :magenta
 

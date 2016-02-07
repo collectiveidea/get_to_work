@@ -9,7 +9,16 @@ class GetToWork::Service::PivotalTracker < GetToWork::Service
   end
 
   def api_token
-    @api_token ||= keychain
+    if @api_token.nil?
+      @api_token = keychains.last.password
+      ::PivotalTracker::Client.token = @api_token
+    end
+
+    @api_token
+  end
+
+  def projects
+    @projects ||= GetToWork::ProjectPresenter.with_collection(get_projects)
   end
 
   def get_projects

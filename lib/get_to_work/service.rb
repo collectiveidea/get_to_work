@@ -13,7 +13,7 @@ class GetToWork::Service
     )
   end
 
-  def keychain
+  def keychains
     GetToWork::Keychain.find(service: self.name)
   end
 end

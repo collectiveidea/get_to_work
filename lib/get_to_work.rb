@@ -7,6 +7,7 @@ require "get_to_work/command/start"
 require "get_to_work/command/stop"
 require "get_to_work/service"
 require "get_to_work/service/pivotal_tracker"
+require "get_to_work/project_presenter"
 
 module GetToWork
   # Your code goes here...

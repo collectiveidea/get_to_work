@@ -12,7 +12,7 @@ module GetToWork
     def self.find(service:)
       ::Keychain.generic_passwords.where(
         service: absolute_service_name(service)
-      )
+      ).all
     end
 
     private

@@ -6,16 +6,19 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
   def run(opts={})
     pt = GetToWork::Service::PivotalTracker.new
 
-    @cli.say "\n\nStep #{pt.display_name} Setup", :green
-    @cli.say "-----------------------------", :green
+    @cli.say "\n\nStep #{pt.display_name} Setup", :magenta
+    @cli.say "-----------------------------", :magenta
 
-    prompt_for_login(pt)
+    if pt.api_token.nil?
+      prompt_for_login(pt)
+    end
+
     prompt_select_project(pt)
   end
 
   def prompt_for_login(service)
-    username = @cli.ask "#{service.display_name} Username:"
-    password = @cli.ask "#{service.display_name} Password:"
+    username = @cli.ask "#{service.display_name} Username:", :green
+    password = @cli.ask "#{service.display_name} Password:", :green
 
     @cli.say "\n\nAuthenticating with #{service.display_name}...", :magenta
 
@@ -31,6 +34,11 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
   end
 
   def prompt_select_project(service)
-    service.get_projects
+    project_options = service.projects
+
+    @cli.print_table(project_options.table)
+
+    choice = @cli.ask("\nSelect a #{service.display_name} project:", :green, limited_to: project_options.menu_limit)
+    puts project_options.item_for(choice: choice)
   end
 end

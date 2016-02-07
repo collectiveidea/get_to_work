@@ -4,6 +4,9 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
   KEYCHAIN_SERVICE = "GetToWork::PivotalTracker"
 
   def run(opts={})
+
+    check_for_config_file
+
     pt = GetToWork::Service::PivotalTracker.new
 
     @cli.say "\n\nStep #{pt.display_name} Setup", :magenta
@@ -14,6 +17,16 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
     end
 
     prompt_select_project(pt)
+  end
+
+  def check_for_config_file
+    @config_file = GetToWork::ConfigFile.find()
+
+    if @config_file
+      unless @cli.yes?("Would you like to overwrite your existing #{GetToWork::ConfigFile.filename} file? [y/N]", :green)
+        exit(0)
+      end
+    end
   end
 
   def prompt_for_login(service)

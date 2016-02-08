@@ -13,8 +13,23 @@ class GetToWork::Service
     )
   end
 
-  def keychains
-    GetToWork::Keychain.find(service: self.name)
+  def api_token
+    if keychain && @api_token.nil?
+      @api_token = keychain.password
+      set_client_token(@api_token)
+    end
+
+    @api_token
+  end
+
+  def set_client_token(token)
+    # noop
+  end
+
+  def keychain
+    @keychain ||= GetToWork::Keychain.find(service: self.name).last
+    puts "Keychain: #{@keychain}"
+    @keychain
   end
 
   def save_config(opts)

@@ -2,6 +2,7 @@ require "yaml"
 require "singleton"
 
 class GetToWork::ConfigFile
+  attr_reader :data
   include Singleton
 
   def initialize

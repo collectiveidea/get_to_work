@@ -5,17 +5,16 @@ class GetToWork::Service::PivotalTracker < GetToWork::Service
     @display_name = "Pivotal Tracker"
   end
 
-  def authenticate(username:, password:)
+  def authenticate(username:, password:, service: _)
     @api_token = ::PivotalTracker::Client.token(username, password)
   end
 
-  def api_token
-    if @api_token.nil?
-      @api_token = keychains.last.password
-      ::PivotalTracker::Client.token = @api_token
-    end
+  def set_client_token(token)
+    api_client.token = token
+  end
 
-    @api_token
+  def api_client
+    ::PivotalTracker::Client
   end
 
   def projects

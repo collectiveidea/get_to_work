@@ -13,11 +13,39 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
     @cli.say "-----------------------------", :magenta
 
     if pt.api_token.nil?
-      prompt_for_login(pt)
+      username, password = prompt_for_login(pt)
+      auth_with_service(service: pt, username: username, password: password)
     end
 
     project = prompt_select_project(pt)
     pt.save_config("project" => project.id)
+
+    GetToWork::ConfigFile.save
+
+    harvest = GetToWork::Service::Harvest.new(GetToWork::ConfigFile.instance.data)
+    
+    @cli.say "\n\nStep #2 #{harvest.display_name} Setup", :magenta
+    @cli.say "-----------------------------", :magenta
+
+    if harvest.api_token.nil?
+      subdomain, username, password = prompt_for_subdomain_and_login(harvest)
+      auth_with_service(
+        service: harvest,
+        username: username,
+        password: password,
+        subdomain: subdomain
+      )
+    end
+
+    client_id = @cli.ask "Harvest Client ID:"
+    task_id = @cli.ask "Harvest Software Development Task ID:"
+
+    harvest.save_config(
+      "project" => project.id,
+      "subdomain" => subdomain,
+      "client_id" => client_id,
+      "task_id" => task_id
+    )
 
     GetToWork::ConfigFile.save
   end
@@ -36,10 +64,21 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
     username = @cli.ask "#{service.display_name} Username:", :green
     password = @cli.ask "#{service.display_name} Password:", :green
 
+    [username, password]
+  end
+
+  def prompt_for_subdomain_and_login(service)
+    subdomain = @cli.ask "#{service.display_name} Subdomain:", :green
+    username, password = prompt_for_login(service)
+
+    [subdomain, username, password]
+  end
+
+  def auth_with_service(service:, username:, password:, subdomain: nil)
     @cli.say "\n\nAuthenticating with #{service.display_name}...", :magenta
 
     begin
-      service.authenticate(username: username, password: password)
+      service.authenticate(username: username, password: password, subdomain: subdomain)
       puts service.inspect
     rescue RestClient::Unauthorized
       @cli.say "Could not authenticate with #{service.display_name}", :red
@@ -57,6 +96,17 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
       project_options,
       :green,
       limited_to: project_options.menu_limit
+    )
+  end
+
+  def prompt_select_client(service)
+    client_options = GetToWork::MenuPresenter.with_collection(service.clients)
+
+    selected_client = @cli.menu_ask(
+      "\nSelect a #{service.display_name} client:",
+      client_options,
+      :green,
+      limited_to: client_options.menu_limit
     )
   end
 end

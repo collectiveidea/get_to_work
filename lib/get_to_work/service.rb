@@ -2,6 +2,11 @@ class GetToWork::Service
   attr_reader :name, :api_token, :yaml_key
   attr_accessor :display_name
 
+  def initialize(data_hash)
+    @data = data_hash[@yaml_key]
+    @data.each { |name, value| instance_variable_set("@#{name}", value) }
+  end
+
   def update_keychain(account:)
     raise "@api_token not set for #{self.name}" if @api_token.nil?
     raise "@name not set for #{self.name}" if @api_token.nil?

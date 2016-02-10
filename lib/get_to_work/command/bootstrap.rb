@@ -23,7 +23,7 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
     GetToWork::ConfigFile.save
 
     harvest = GetToWork::Service::Harvest.new(GetToWork::ConfigFile.instance.data)
-    
+
     @cli.say "\n\nStep #2 #{harvest.display_name} Setup", :magenta
     @cli.say "-----------------------------", :magenta
 
@@ -37,14 +37,13 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
       )
     end
 
-    client_id = @cli.ask "Harvest Client ID:"
-    task_id = @cli.ask "Harvest Software Development Task ID:"
+    harvest_project = prompt_select_project(harvest)
+    harvest_task = prompt_select_tasks(harvest, harvest_project)
 
     harvest.save_config(
-      "project" => project.id,
-      "subdomain" => subdomain,
-      "client_id" => client_id,
-      "task_id" => task_id
+      "project" => harvest_project.id,
+      "task" => harvest_task["id"],
+      "subdomain" => harvest.subdomain
     )
 
     GetToWork::ConfigFile.save
@@ -93,6 +92,17 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
 
     selected_project = @cli.menu_ask(
       "\nSelect a #{service.display_name} project:",
+      project_options,
+      :green,
+      limited_to: project_options.menu_limit
+    )
+  end
+
+  def prompt_select_tasks(service, project)
+    project_options = GetToWork::MenuPresenter.with_collection(project["tasks"])
+
+    selected_project = @cli.menu_ask(
+      "\nSelect a #{service.display_name} Task:",
       project_options,
       :green,
       limited_to: project_options.menu_limit

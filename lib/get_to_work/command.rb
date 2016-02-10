@@ -8,8 +8,9 @@ module GetToWork
       new(opts).run
     end
 
-    def initialize(cli: nil)
+    def initialize(cli: nil, pt_id:nil)
       @cli = cli
+      @pt_id = pt_id
     end
 
     def run

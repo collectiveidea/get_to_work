@@ -1,10 +1,29 @@
 class GetToWork::Service
-  attr_reader :name, :api_token, :yaml_key
-  attr_accessor :display_name
+  attr_reader :api_token
 
-  def initialize(data_hash)
-    @data = data_hash[@yaml_key]
+  class << self
+    attr_accessor :yaml_key, :name, :display_name
+  end
+
+  def yaml_key
+    self.class.yaml_key
+  end
+
+  def name
+    self.class.name
+  end
+
+  def display_name
+    self.class.display_name
+  end
+
+  def initialize(data_hash=nil)
+    return if data_hash.nil?
+    
+    @data = data_hash[self.yaml_key]
     @data.each { |name, value| instance_variable_set("@#{name}", value) }
+
+    authenticate_with_keychain
   end
 
   def update_keychain(account:)
@@ -12,7 +31,7 @@ class GetToWork::Service
     raise "@name not set for #{self.name}" if @api_token.nil?
 
     keychain_item = GetToWork::Keychain.new.update(
-      service: @name,
+      service: self.class.name,
       account: account,
       password: @api_token
     )

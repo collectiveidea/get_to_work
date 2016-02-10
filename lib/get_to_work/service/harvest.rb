@@ -1,24 +1,25 @@
 require 'harvested'
 
 class GetToWork::Service::Harvest < GetToWork::Service
-  def initialize(yaml_hash)
-    @yaml_key = "harvest"
-    @name = "Harvest"
-    @display_name = "Harvest"
+  @yaml_key = "harvest"
+  @name = "Harvest"
+  @display_name = "Harvest"
 
-    if yaml_hash
-      data = yaml_hash[@yaml_key]
-      @subdomain = data["subdomain"]
-      @client_id = data["client_id"]
-      @task_id = data["task_id"]
-    else
-    end
+  attr_reader :subdomain
+  def initialize(yaml_hash)
+    super(yaml_hash)
 
     @harvest = nil
   end
 
   def api_client
     @api_client ||= ::Harvest.client(subdomain: @subdomain, username: keychain.account, password: keychain.password)
+  end
+
+  def authenticate_with_keychain
+    if the_keychain = keychain
+      api_client
+    end
   end
 
   def authenticate(username:, password:, subdomain:)
@@ -36,5 +37,17 @@ class GetToWork::Service::Harvest < GetToWork::Service
 
   def get_clients
     api_client.clients.all
+  end
+
+  def get_time
+    api_client.time
+  end
+
+
+  def projects
+    api_client.time.trackable_projects
+  end
+
+  def track_time
   end
 end

@@ -5,7 +5,7 @@ class GetToWork::Service::Harvest < GetToWork::Service
   @name = "Harvest"
   @display_name = "Harvest"
 
-  attr_reader :subdomain
+  attr_reader :subdomain, :project_id, :task_id
   def initialize(yaml_hash)
     super(yaml_hash)
 
@@ -13,18 +13,26 @@ class GetToWork::Service::Harvest < GetToWork::Service
   end
 
   def api_client
-    @api_client ||= ::Harvest.client(subdomain: @subdomain, username: keychain.account, password: keychain.password)
+    @api_client ||= ::Harvest.client(
+      subdomain: @subdomain,
+      username: keychain.account,
+      password: keychain.password
+    )
   end
 
   def authenticate_with_keychain
-    if the_keychain = keychain
+    if keychain
       api_client
     end
   end
 
   def authenticate(username:, password:, subdomain:)
     @subdomain = subdomain
-    @api_client = ::Harvest.client(subdomain: @subdomain, username: username, password: password)
+    @api_client = ::Harvest.client(
+      subdomain: @subdomain,
+      username: username,
+      password: password
+    )
 
     if @api_client
       @api_token = password
@@ -43,11 +51,15 @@ class GetToWork::Service::Harvest < GetToWork::Service
     api_client.time
   end
 
-
   def projects
     api_client.time.trackable_projects
   end
 
-  def track_time
+  def project
+    projects.find(@project_id)
+  end
+
+  def start_timer(opts = {})
+    api_client.time.create(opts)
   end
 end

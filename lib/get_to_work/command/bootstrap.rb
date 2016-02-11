@@ -18,7 +18,7 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
     end
 
     project = prompt_select_project(pt)
-    pt.save_config("project" => project.id)
+    pt.save_config("project_id" => project.id)
 
     GetToWork::ConfigFile.save
 
@@ -41,8 +41,8 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
     harvest_task = prompt_select_tasks(harvest, harvest_project)
 
     harvest.save_config(
-      "project" => harvest_project.id,
-      "task" => harvest_task["id"],
+      "project_id" => harvest_project.id,
+      "task_id" => harvest_task["id"],
       "subdomain" => harvest.subdomain
     )
 

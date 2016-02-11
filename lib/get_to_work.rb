@@ -1,3 +1,4 @@
+require "pry"
 require "thor"
 require "get_to_work/menu" # thor extensions
 require "get_to_work/menu_presenter"

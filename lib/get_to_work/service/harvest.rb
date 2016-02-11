@@ -21,8 +21,8 @@ class GetToWork::Service::Harvest < GetToWork::Service
   end
 
   def authenticate_with_keychain
-    if keychain
-      api_client
+    if !@subdomain.blank? && keychain
+      return api_client
     end
   end
 

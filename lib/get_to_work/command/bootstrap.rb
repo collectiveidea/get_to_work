@@ -1,10 +1,9 @@
 require "pivotal-tracker"
 
 class GetToWork::Command::Bootstrap < GetToWork::Command
-  KEYCHAIN_SERVICE = "GetToWork::PivotalTracker"
+  KEYCHAIN_SERVICE = "GetToWork::PivotalTracker".freeze
 
-  def run(opts={})
-
+  def run(opts = {})
     check_for_config_file
 
     pt = GetToWork::Service::PivotalTracker.new
@@ -12,7 +11,9 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
     @cli.say "\n\nStep #1 #{pt.display_name} Setup", :magenta
     @cli.say "-----------------------------", :magenta
 
-    if pt.api_token.nil?
+    if pt.keychain
+      pt.authenticate_with_keychain
+    else
       username, password = prompt_for_login(pt)
       auth_with_service(service: pt, username: username, password: password)
     end
@@ -22,12 +23,14 @@ class GetToWork::Command::Bootstrap < GetToWork::Command
 
     GetToWork::ConfigFile.save
 
-    harvest = GetToWork::Service::Harvest.new(GetToWork::ConfigFile.instance.data)
+    harvest = GetToWork::Service::Harvest.new(
+      GetToWork::ConfigFile.instance.data
+    )
 
     @cli.say "\n\nStep #2 #{harvest.display_name} Setup", :magenta
     @cli.say "-----------------------------", :magenta
 
-    if harvest.api_token.nil?
+    unless harvest.authenticate_with_keychain
       subdomain, username, password = prompt_for_subdomain_and_login(harvest)
       auth_with_service(
         service: harvest,

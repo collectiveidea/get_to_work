@@ -14,13 +14,17 @@ module GetToWork
       end
 
       def authenticate_with_keychain
-        if the_keychain = keychain
-          set_client_token(the_keychain.password)
+        if keychain
+          set_client_token(keychain.password)
         end
       end
 
       def set_client_token(token)
         @api_token = token
+      end
+
+      def api_token
+        @api_token ||= authenticate_with_keychain
       end
 
       def api_client
@@ -32,7 +36,7 @@ module GetToWork
       end
 
       def get_projects
-        ::PivotalTracker::Project.all
+        api_client.projects
       end
 
       def story(story_id)

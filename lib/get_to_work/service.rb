@@ -17,20 +17,21 @@ class GetToWork::Service
     self.class.display_name
   end
 
-  def initialize(data_hash=nil)
+  def initialize(data_hash = nil)
     return if data_hash.nil?
-    
-    @data = data_hash[self.yaml_key]
-    @data.each { |name, value| instance_variable_set("@#{name}", value) }
 
-    authenticate_with_keychain
+    @data = data_hash[yaml_key]
+    if @data
+      @data.each { |name, value| instance_variable_set("@#{name}", value) }
+      authenticate_with_keychain
+    end
   end
 
   def update_keychain(account:)
-    raise "@api_token not set for #{self.name}" if @api_token.nil?
-    raise "@name not set for #{self.name}" if @api_token.nil?
+    raise "@api_token not set for #{name}" if @api_token.nil?
+    raise "@name not set for #{name}" if @api_token.nil?
 
-    keychain_item = GetToWork::Keychain.new.update(
+    GetToWork::Keychain.new.update(
       service: self.class.name,
       account: account,
       password: @api_token
@@ -51,13 +52,11 @@ class GetToWork::Service
   end
 
   def keychain
-    @keychain ||= GetToWork::Keychain.find(service: self.name).last
-    puts "Keychain: #{@keychain}"
-    @keychain
+    @keychain ||= GetToWork::Keychain.find(service: name).last
   end
 
   def save_config(opts)
     config_file = GetToWork::ConfigFile.instance
-    config_file[self.yaml_key] = opts
+    config_file[yaml_key] = opts
   end
 end

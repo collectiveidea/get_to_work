@@ -1,2 +1,3 @@
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'get_to_work'
+
+$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+require "get_to_work"

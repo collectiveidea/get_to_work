@@ -199,6 +199,8 @@ Style/EmptyLiteral:
   Description: Prefer literals to Array.new/Hash.new/String.new.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#literal-array-hash
   Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
 Style/ModuleFunction:
   Description: Checks for usage of `extend self` in modules.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#module-function

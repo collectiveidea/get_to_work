@@ -2,7 +2,7 @@ module GetToWork
   KEYCHAIN_PREFIX = "GetToWork"
 
   class Keychain
-    def update(opts={})
+    def update(opts = {})
       relative_service_name = opts[:service]
       @absolute_service_name = self.class.absolute_service_name(relative_service_name)
 

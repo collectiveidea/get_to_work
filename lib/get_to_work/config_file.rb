@@ -1,49 +1,49 @@
 require "yaml"
 require "singleton"
 
-class GetToWork::ConfigFile
-  attr_reader :data
-  include Singleton
+module GetToWork
+  class ConfigFile
+    attr_reader :data
+    include Singleton
 
-  def initialize
-    setup_data(self.class.path)
-  end
-
-  def setup_data(path)
-    @data = begin
-      YAML.load_file(path)
-    rescue Errno::ENOENT
-      {}
+    def initialize
+      setup_data(self.class.path)
     end
 
-    puts @data
-  end
+    def setup_data(path)
+      @data = begin
+                YAML.load_file(path)
+              rescue Errno::ENOENT
+                {}
+              end
+    end
 
-  def [](key)
-    @data[key]
-  end
+    def [](key)
+      @data[key]
+    end
 
-  def []=(key, value)
-    @data[key] = value
-  end
+    def []=(key, value)
+      @data[key] = value
+    end
 
-  def self.save
-    instance.save
-  end
+    def self.save
+      instance.save
+    end
 
-  def save
-    File.open(self.class.path, 'w') {|f| f.write YAML.dump(@data) } #Store
-  end
+    def save
+      File.open(self.class.path, "w") { |f| f.write YAML.dump(@data) }
+    end
 
-  def self.exist?
-    File.exist? path
-  end
+    def self.exist?
+      File.exist? path
+    end
 
-  def self.path
-    File.join(Dir.pwd, filename)
-  end
+    def self.path
+      File.join(Dir.pwd, filename)
+    end
 
-  def self.filename
-    ".get-to-work"
+    def self.filename
+      ".get-to-work"
+    end
   end
 end

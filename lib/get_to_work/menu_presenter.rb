@@ -1,4 +1,4 @@
-class GetToWork
+module GetToWork
   class MenuPresenter
     def self.with_collection(options)
       new(options)

@@ -1,6 +1,6 @@
 require "harvested"
 
-class GetToWork
+module GetToWork
   class Service
     class Harvest < GetToWork::Service
       @yaml_key = "harvest"

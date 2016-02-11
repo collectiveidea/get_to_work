@@ -2,8 +2,7 @@ require "keychain"
 
 module GetToWork
   class Command
-
-    def self.run(opts={})
+    def self.run(opts = {})
       trap("SIGINT") { exit! }
       new(opts).run
     end

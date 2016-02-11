@@ -1,7 +1,7 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'get_to_work/version'
+require "get_to_work/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "get_to_work"
@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Chris Rittersdorf"]
   spec.email         = ["chris.rittersdorf@collectiveidea.com"]
 
-  spec.summary       = %q{Tag Harvest time entries with Pivotal Tracker information}
-  spec.description   = %q{Tag Harvest time entries with Pivotal Tracker information}
+  spec.summary       = "Tag Harvest time entries with Pivotal Tracker information"
+  spec.description   = "Tag Harvest time entries with Pivotal Tracker information"
   spec.homepage      = ""
   spec.license       = "MIT"
 

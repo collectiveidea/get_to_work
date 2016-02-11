@@ -1,4 +1,4 @@
-class GetToWork
+module GetToWork
   class Service
     attr_reader :api_token
 

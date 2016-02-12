@@ -80,7 +80,6 @@ module GetToWork
 
         begin
           service.authenticate(username: username, password: password, subdomain: subdomain)
-          puts service.inspect
         rescue RestClient::Unauthorized
           @cli.say "Could not authenticate with #{service.display_name}", :red
           exit(1)

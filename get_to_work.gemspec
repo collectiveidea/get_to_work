@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "Tag Harvest time entries with Pivotal Tracker information"
   spec.description   = "Tag Harvest time entries with Pivotal Tracker information"
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/collectiveidea/get_to_work"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

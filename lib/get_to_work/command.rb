@@ -7,9 +7,12 @@ module GetToWork
       new(opts).run
     end
 
-    def initialize(cli: nil, pt_id:nil)
-      @cli = cli
-      @pt_id = pt_id
+    def initialize(opts = {})
+      @cli = opts[:cli]
+    end
+
+    def config_file
+      ConfigFile.instance
     end
 
     def run

@@ -8,7 +8,7 @@ module GetToWork
     end
 
     desc "start <Pivotal Tracker Story ID or URL>", "start working on a pivotal tracker story"
-    def start(pt_id)
+    def start(pt_id = nil)
       GetToWork::Command::Start.run(cli: self, pt_id: pt_id)
     end
 

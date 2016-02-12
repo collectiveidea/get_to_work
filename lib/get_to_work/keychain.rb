@@ -19,7 +19,7 @@ module GetToWork
     class <<self
       private
 
-      def self.absolute_service_name(relative_name)
+      def absolute_service_name(relative_name)
         "#{KEYCHAIN_PREFIX}::#{relative_name}"
       end
     end

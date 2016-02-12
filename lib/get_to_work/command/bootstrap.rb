@@ -25,30 +25,27 @@ module GetToWork
 
         GetToWork::ConfigFile.save
 
-        harvest = GetToWork::Service::Harvest.new(
-          GetToWork::ConfigFile.instance.data
-        )
 
-        @cli.say "\n\nStep #2 #{harvest.display_name} Setup", :magenta
+        @cli.say "\n\nStep #2 #{harvest_service.display_name} Setup", :magenta
         @cli.say "-----------------------------", :magenta
 
-        unless harvest.authenticate_with_keychain
-          subdomain, username, password = prompt_for_subdomain_and_login(harvest)
+        unless harvest_service.authenticate_with_keychain
+          subdomain, username, password = prompt_for_subdomain_and_login(harvest_service)
           auth_with_service(
-            service: harvest,
+            service: harvest_service,
             username: username,
             password: password,
             subdomain: subdomain
           )
         end
 
-        harvest_project = prompt_select_project(harvest)
-        harvest_task = prompt_select_tasks(harvest, harvest_project)
+        harvest_project = prompt_select_project(harvest_service)
+        harvest_task = prompt_select_tasks(harvest_service, harvest_project)
 
-        harvest.save_config(
+        harvest_service.save_config(
           "project_id" => harvest_project.id,
           "task_id" => harvest_task["id"],
-          "subdomain" => harvest.subdomain
+          "subdomain" => harvest_service.subdomain
         )
 
         GetToWork::ConfigFile.save

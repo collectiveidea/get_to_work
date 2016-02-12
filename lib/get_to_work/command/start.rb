@@ -17,14 +17,13 @@ module GetToWork
         pt = GetToWork::Service::PivotalTracker.new(config_file.data)
         story = pt.story(@pt_id)
 
-        harvest = GetToWork::Service::Harvest.new(config_file.data)
         entry = {
           notes: "##{story.id}\n\n#{story.name}\n#{story.url}",
-          project_id: harvest.project_id,
-          task_id: harvest.task_id,
+          project_id: harvest_service.project_id,
+          task_id: harvest_service.task_id,
         }
 
-        timer = harvest.start_timer(entry)
+        timer = harvest_service.start_timer(entry)
         save_last_timer(timer)
         save_last_story(story)
       end

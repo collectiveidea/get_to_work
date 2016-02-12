@@ -63,7 +63,7 @@ module GetToWork
 
       def prompt_for_login(service)
         username = @cli.ask "#{service.display_name} Username:", :green
-        password = @cli.ask "#{service.display_name} Password:", :green
+        password = @cli.ask "#{service.display_name} Password:", :green, echo: false
 
         [username, password]
       end

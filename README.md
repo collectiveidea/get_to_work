@@ -1,41 +1,42 @@
-# GetToWork
+# get\_to\_work
+get\_to\_work tags your Harvest time entries with information from Pivotal Tracker, *from your command line.*
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/get_to_work`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+No more tab twiddling to do this task in the browser.
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'get_to_work'
+```shell
+gem install get_to_work
 ```
 
-And then execute:
+## Workflow
 
-    $ bundle
+### Bootstrap your project's directory
+get\_to\_work needs to know how to talk to your services (Harvest and Pivotal Tracker). So each of your project's working directories need to be bootstrapped:
 
-Or install it yourself as:
+```shell
+get-to-work bootstrap
+```
 
-    $ gem install get_to_work
+This command will:
 
-## Usage
-
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/get_to_work. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+* Save your credentials to the OSX keychain
+* Bookmark your Pivotal Tracker and Harvest projects in a `.get-to-work` file
 
 
-## License
+### Start working on a story
+```shell
+get-to-work start [pivotal_tracker_story_url]
+```
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+This command pulls information from Pivotal Tracker and saves it in your new timer's notes including:
 
+* Pivotal Tracker ID hashtag
+* Pivotal Tracker story name
+* Pivotal Tracker URL
+
+### Stop working on a story
+```shell
+get-to-work stop
+```
+
+Stops the current timer started by get\_to\_work.

@@ -45,6 +45,7 @@ module GetToWork
           end
         else
           @cli.say "Couldn't find your last started timer. Please specify a story id."
+          exit(0)
         end
       end
 

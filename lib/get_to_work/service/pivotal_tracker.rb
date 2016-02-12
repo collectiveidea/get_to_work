@@ -9,7 +9,7 @@ module GetToWork
       @name = "PivotalTracker"
       @display_name = "Pivotal Tracker"
 
-      def authenticate(username:, password:)
+      def authenticate(username:, password:, subdomain:_)
         @api_token = ::PivotalTracker::Client.token(username, password)
       end
 

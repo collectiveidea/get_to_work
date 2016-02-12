@@ -16,12 +16,8 @@ module GetToWork
       ).all
     end
 
-    class <<self
-      private
-
-      def absolute_service_name(relative_name)
-        "#{KEYCHAIN_PREFIX}::#{relative_name}"
-      end
+    def self.absolute_service_name(relative_name)
+      "#{KEYCHAIN_PREFIX}::#{relative_name}"
     end
 
     private

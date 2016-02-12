@@ -5,7 +5,7 @@ module GetToWork
     class Bootstrap < GetToWork::Command
       KEYCHAIN_SERVICE = "GetToWork::PivotalTracker".freeze
 
-      def run(_opts)
+      def run(opts = {})
         check_for_config_file
 
         pt = GetToWork::Service::PivotalTracker.new

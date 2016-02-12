@@ -20,6 +20,11 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "thor"
+  spec.add_dependency "crack", "~> 0.4.3"
+  spec.add_dependency "httparty", "~> 0.13.7"
+  spec.add_dependency "addressable", "~> 2.4"
+  spec.add_dependency "multipart-post", "~> 2.0.0"
+  spec.add_dependency "domain_name", ">= 0.5.0"
   spec.add_dependency "ruby-keychain"
   spec.add_dependency "pivotal-tracker"
   spec.add_dependency "harvested"

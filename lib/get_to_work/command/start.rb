@@ -36,7 +36,7 @@ module GetToWork
           @cli.say "\nWould you like to start a timer for your last story?", :green
           @cli.say "  ##{last_story[:id.to_s]} ", [:bold, :cyan]
           @cli.say "#{last_story[:name.to_s]}", :magenta
-          answer = @cli.ask "\n[y/N]", :green
+          answer = @cli.yes? "\n[y/N]", :green
 
           if answer
             @pt_id = last_story["id"]

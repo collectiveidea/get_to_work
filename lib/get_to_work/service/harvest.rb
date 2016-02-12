@@ -64,6 +64,10 @@ module GetToWork
       def start_timer(opts = {})
         api_client.time.create(opts)
       end
+
+      def stop_timer(timer_id)
+        api_client.time.toggle(timer_id)
+      end
     end
   end
 end

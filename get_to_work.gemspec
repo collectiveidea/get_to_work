@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "Tag Harvest time entries with Pivotal Tracker information"
   spec.description   = "Tag Harvest time entries with Pivotal Tracker information"
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/collectiveidea/get_to_work"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
@@ -21,20 +21,15 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "thor"
-  spec.add_dependency "crack", "~> 0.4"
-  spec.add_dependency "httparty", "~> 0.13"
-  spec.add_dependency "addressable", "~> 2.3"
-  spec.add_dependency "multipart-post", "~> 2.0"
-  spec.add_dependency "rest-client", '~> 1.8'
-  spec.add_dependency "ruby-keychain"
-  spec.add_dependency "pivotal-tracker"
-  spec.add_dependency "harvested"
-  spec.add_dependency "tracker_api", "~> 0.2"
-  spec.add_dependency "faraday", "~> 0.9"
+  spec.add_dependency "nokogiri", "~> 1.6", ">= 1.6.7.2"
+  spec.add_dependency "ruby-keychain", "~> 0.3.2"
+  spec.add_dependency "harvested", "~> 3.1", ">= 3.1.1"
+  spec.add_dependency "tracker_api", "~> 0.2.12"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "bump"
 end

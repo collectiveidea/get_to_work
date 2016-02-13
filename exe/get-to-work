@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-require "rubygems"
+$LOAD_PATH.push File.expand_path("../../lib", __FILE__)
+
 require "get_to_work"
 
 GetToWork::CLI.start(ARGV)

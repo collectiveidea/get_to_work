@@ -1,5 +1,8 @@
 module GetToWork
   class Service
+    class UnauthorizedError < StandardError
+    end
+
     attr_reader :api_token
 
     class << self

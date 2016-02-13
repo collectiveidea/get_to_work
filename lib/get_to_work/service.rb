@@ -16,7 +16,7 @@ module GetToWork
     end
 
     def name
-      self.class.to_s
+      self.class.to_s.split("::").last
     end
 
     def display_name
@@ -27,8 +27,13 @@ module GetToWork
       return if data_hash.nil?
 
       @data = data_hash[yaml_key]
+
       if @data
-        @data.each { |name, value| instance_variable_set("@#{name}", value) }
+        @data.each do |name, value|
+          instance_variable_set("@#{name}", value)
+          puts name.to_sym
+          self.class.class_eval { attr_reader(name.to_sym) }
+        end
         authenticate_with_keychain
       end
     end

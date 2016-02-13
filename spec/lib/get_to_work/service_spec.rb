@@ -6,37 +6,28 @@ class MyService < GetToWork::Service
 end
 
 describe GetToWork::Service do
-  let(:service) { MyService.new }
+  subject { MyService.new }
 
-  describe "#display_name" do
-    it "returns a name to be displayed for the service" do
-      expect(service.display_name).to eq("My Service")
-    end
+  it do
+    is_expected.to have_attributes(
+      name: "MyService",
+      display_name: "My Service",
+      yaml_key: "my_service"
+    )
   end
 
-  describe "#name" do
-    it "returns the name of the class" do
-      expect(service.name).to eq("MyService")
+  describe "#new" do
+    let(:configs) do
+      { "service" => { "foo_bar_id" => 1, "baz_id" => 3 } }
     end
-  end
 
-  describe "#yaml_key" do
-    it "returns the yaml key to use for configuration" do
-      expect(service.yaml_key).to eq("my_service")
+    subject { GetToWork::Service.new(configs) }
+
+    it "creates instance variables from configuration data" do
+      expect(subject).to have_attributes(
+        foo_bar_id: 1,
+        baz_id: 3
+      )
     end
-  end
-
-  it "loads configuration information given a yaml node" do
-    data = {
-      "other_service" => {
-        "foo" => "bar"
-      },
-      "my_service" => {
-        "foo" => "baz"
-      }
-    }
-
-    subject = MyService.new(data)
-    expect(subject.foo).to eql("baz")
   end
 end

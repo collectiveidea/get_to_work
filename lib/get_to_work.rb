@@ -1,5 +1,6 @@
 require "pry"
 require "thor"
+require "ext/string"
 require "get_to_work/menu" # thor extensions
 require "get_to_work/menu_presenter"
 

@@ -3,9 +3,7 @@ require "harvested"
 module GetToWork
   class Service
     class Harvest < GetToWork::Service
-      @yaml_key = "harvest"
-      @name = "Harvest"
-      @display_name = "Harvest"
+      display_name  "Harvest"
 
       attr_reader :subdomain, :project_id, :task_id
       def initialize(yaml_hash)

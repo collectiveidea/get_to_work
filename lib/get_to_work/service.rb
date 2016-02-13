@@ -6,15 +6,17 @@ module GetToWork
     attr_reader :api_token
 
     class << self
-      attr_accessor :yaml_key, :name, :display_name
+      def display_name(name = nil)
+        @display_name = name || @display_name
+      end
     end
 
     def yaml_key
-      self.class.yaml_key
+      name.underscore
     end
 
     def name
-      self.class.name
+      self.class.to_s
     end
 
     def display_name
@@ -40,6 +42,9 @@ module GetToWork
         account: account,
         password: @api_token
       )
+    end
+
+    def authenticate_with_keychain
     end
 
     def api_token

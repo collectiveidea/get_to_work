@@ -6,9 +6,7 @@ require "nokogiri"
 module GetToWork
   class Service
     class PivotalTracker < GetToWork::Service
-      @yaml_key = "pivotal_tracker"
-      @name = "PivotalTracker"
-      @display_name = "Pivotal Tracker"
+      display_name "Pivotal Tracker"
 
       def get_auth_token(user:, pass:)
         # POST

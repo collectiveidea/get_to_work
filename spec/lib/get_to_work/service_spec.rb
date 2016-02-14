@@ -1,26 +1,33 @@
 require "spec_helper"
 
 class MyService < GetToWork::Service
+  display_name "My Service"
   attr_reader :foo
-
-  def initialize(data_hash)
-    @yaml_key = "my_service"
-    super(data_hash)
-  end
 end
 
 describe GetToWork::Service do
-  it "loads configuration information given a yaml node" do
-    data = {
-      "other_service" => {
-        "foo" => "bar"
-      },
-      "my_service" => {
-        "foo" => "baz"
-      }
-    }
+  subject { MyService.new }
 
-    subject = MyService.new(data)
-    expect(subject.foo).to eql("baz")
+  it do
+    is_expected.to have_attributes(
+      name: "MyService",
+      display_name: "My Service",
+      yaml_key: "my_service"
+    )
+  end
+
+  describe "#new" do
+    let(:configs) do
+      { "service" => { "foo_bar_id" => 1, "baz_id" => 3 } }
+    end
+
+    subject { GetToWork::Service.new(configs) }
+
+    it "creates instance variables from configuration data" do
+      expect(subject).to have_attributes(
+        foo_bar_id: 1,
+        baz_id: 3
+      )
+    end
   end
 end

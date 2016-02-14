@@ -6,15 +6,17 @@ module GetToWork
     attr_reader :api_token
 
     class << self
-      attr_accessor :yaml_key, :name, :display_name
+      def display_name(name = nil)
+        @display_name = name || @display_name
+      end
     end
 
     def yaml_key
-      self.class.yaml_key
+      name.underscore
     end
 
     def name
-      self.class.name
+      self.class.to_s.split("::").last
     end
 
     def display_name
@@ -25,8 +27,13 @@ module GetToWork
       return if data_hash.nil?
 
       @data = data_hash[yaml_key]
+
       if @data
-        @data.each { |name, value| instance_variable_set("@#{name}", value) }
+        @data.each do |name, value|
+          instance_variable_set("@#{name}", value)
+          puts name.to_sym
+          self.class.class_eval { attr_reader(name.to_sym) }
+        end
         authenticate_with_keychain
       end
     end
@@ -40,6 +47,9 @@ module GetToWork
         account: account,
         password: @api_token
       )
+    end
+
+    def authenticate_with_keychain
     end
 
     def api_token

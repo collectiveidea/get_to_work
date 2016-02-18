@@ -32,10 +32,10 @@ module GetToWork
         last_story = config_file["last_story"]
 
         if last_story
-          @cli.say "\nWould you like to start a timer for your last story?", :green
-          @cli.say "  ##{last_story[:id.to_s]} ", [:bold, :cyan]
-          @cli.say "#{last_story[:name.to_s]}", :magenta
-          answer = @cli.yes? "\n[y/N]", :green
+          shell.say "\nWould you like to start a timer for your last story?", :green
+          shell.say "  ##{last_story[:id.to_s]} ", [:bold, :cyan]
+          shell.say "#{last_story[:name.to_s]}", :magenta
+          answer = shell.yes? "\n[y/N]", :green
 
           if answer
             @pt_id = last_story["id"]
@@ -43,7 +43,7 @@ module GetToWork
             exit(0)
           end
         else
-          @cli.say "Couldn't find your last started timer. Please specify a story id."
+          shell.say "Couldn't find your last started timer. Please specify a story id."
           exit(0)
         end
       end

@@ -8,8 +8,8 @@ module GetToWork
 
         pt = GetToWork::Service::PivotalTracker.new
 
-        @cli.say "\n\nStep #1 #{pt.display_name} Setup", :magenta
-        @cli.say "-----------------------------", :magenta
+        shell.say "\n\nStep #1 #{pt.display_name} Setup", :magenta
+        shell.say "-----------------------------", :magenta
 
         if pt.keychain
           pt.authenticate_with_keychain
@@ -24,8 +24,8 @@ module GetToWork
         GetToWork::ConfigFile.save
 
 
-        @cli.say "\n\nStep #2 #{harvest_service.display_name} Setup", :magenta
-        @cli.say "-----------------------------", :magenta
+        shell.say "\n\nStep #2 #{harvest_service.display_name} Setup", :magenta
+        shell.say "-----------------------------", :magenta
 
         unless harvest_service.authenticate_with_keychain
           subdomain, username, password = prompt_for_subdomain_and_login(harvest_service)
@@ -53,33 +53,33 @@ module GetToWork
         @config_file = GetToWork::ConfigFile.instance
 
         if @config_file
-          unless @cli.yes?("Would you like to overwrite your existing #{GetToWork::ConfigFile.filename} file? [y/N]", :green)
+          unless shell.yes?("Would you like to overwrite your existing #{GetToWork::ConfigFile.filename} file? [y/N]", :green)
             exit(0)
           end
         end
       end
 
       def prompt_for_login(service)
-        username = @cli.ask "#{service.display_name} Username:", :green
-        password = @cli.ask "#{service.display_name} Password:", :green, echo: false
+        username = shell.ask "#{service.display_name} Username:", :green
+        password = shell.ask "#{service.display_name} Password:", :green, echo: false
 
         [username, password]
       end
 
       def prompt_for_subdomain_and_login(service)
-        subdomain = @cli.ask "#{service.display_name} Subdomain:", :green
+        subdomain = shell.ask "#{service.display_name} Subdomain:", :green
         username, password = prompt_for_login(service)
 
         [subdomain, username, password]
       end
 
       def auth_with_service(service:, username:, password:, subdomain: nil)
-        @cli.say "\n\nAuthenticating with #{service.display_name}...", :magenta
+        shell.say "\n\nAuthenticating with #{service.display_name}...", :magenta
 
         begin
           service.authenticate(username: username, password: password, subdomain: subdomain)
         rescue Service::UnauthorizedError
-          @cli.say "Could not authenticate with #{service.display_name}", :red
+          shell.say "Could not authenticate with #{service.display_name}", :red
           exit(1)
         end
 
@@ -89,7 +89,7 @@ module GetToWork
       def prompt_select_project(service)
         project_options = GetToWork::MenuPresenter.with_collection(service.projects)
 
-        @cli.menu_ask(
+        menu_ask(
           "\nSelect a #{service.display_name} project:",
           project_options,
           :green,
@@ -100,7 +100,7 @@ module GetToWork
       def prompt_select_tasks(service, project)
         project_options = GetToWork::MenuPresenter.with_collection(project["tasks"])
 
-        selected_project = @cli.menu_ask(
+        selected_project = menu_ask(
           "\nSelect a #{service.display_name} Task:",
           project_options,
           :green,

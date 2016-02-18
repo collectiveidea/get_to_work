@@ -1,6 +1,5 @@
 module GetToWork
   class CLI < Thor
-
     desc "bootstrap", "creates .gtw configuration for your current working directory"
     def bootstrap
       GetToWork::Command::Bootstrap.run

@@ -4,6 +4,8 @@ AllCops:
     - "vendor/**/*"
     - "db/schema.rb"
   UseCache: false
+Style/LineLength:
+  Max: 130
 Style/CollectionMethods:
   Description: Preferred collection methods.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#map-find-select-reduce-size
@@ -36,7 +38,7 @@ Style/IfUnlessModifier:
   Description: Favor modifier if/unless usage when you have a single-line body.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#if-as-a-modifier
   Enabled: false
-  MaxLineLength: 100
+  MaxLineLength: 130
 Style/OptionHash:
   Description: Don't use option hashes when you can use keyword arguments.
   Enabled: false

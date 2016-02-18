@@ -1,9 +1,7 @@
 module GetToWork
   class Command
     class Bootstrap < GetToWork::Command
-      KEYCHAIN_SERVICE = "GetToWork::PivotalTracker".freeze
-
-      def run(opts = {})
+      def run
         check_for_config_file
 
         pt = GetToWork::Service::PivotalTracker.new
@@ -22,7 +20,6 @@ module GetToWork
         pt.save_config("project_id" => project.id)
 
         GetToWork::ConfigFile.save
-
 
         shell.say "\n\nStep #2 #{harvest_service.display_name} Setup", :magenta
         shell.say "-----------------------------", :magenta

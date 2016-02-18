@@ -31,7 +31,6 @@ module GetToWork
       if @data
         @data.each do |name, value|
           instance_variable_set("@#{name}", value)
-          puts name.to_sym
           self.class.class_eval { attr_reader(name.to_sym) }
         end
         authenticate_with_keychain
@@ -43,7 +42,7 @@ module GetToWork
       raise "@name not set for #{name}" if @api_token.nil?
 
       GetToWork::Keychain.new.update(
-        service: self.class.name,
+        service: name,
         account: account,
         password: @api_token
       )

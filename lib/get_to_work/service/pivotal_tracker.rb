@@ -50,7 +50,7 @@ module GetToWork
       end
 
       def api_client
-        @api_client ||= TrackerApi::Client.new(token: @api_token)
+        @api_client ||= TrackerApi::Client.new(token: api_token)
       end
 
       def projects

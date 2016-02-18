@@ -93,9 +93,13 @@ module GetToWork
       end
 
       def prompt_select_tasks(service, project)
-        project_options = GetToWork::MenuPresenter.with_collection(project["tasks"])
+        tasks = project["tasks"].sort do |x, y|
+          x[:name] <=> y[:name]
+        end
 
-        selected_project = menu_ask(
+        project_options = GetToWork::MenuPresenter.with_collection(tasks)
+
+        menu_ask(
           "\nSelect a #{service.display_name} Task:",
           project_options,
           :green,

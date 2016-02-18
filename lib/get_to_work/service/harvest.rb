@@ -52,7 +52,9 @@ module GetToWork
       end
 
       def projects
-        api_client.time.trackable_projects
+        api_client.time.trackable_projects.sort do |x, y|
+          x[:name] <=> y[:name]
+        end
       end
 
       def project

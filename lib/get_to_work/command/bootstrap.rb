@@ -47,9 +47,7 @@ module GetToWork
       end
 
       def check_for_config_file
-        @config_file = GetToWork::ConfigFile.instance
-
-        if @config_file
+        if config_file
           unless shell.yes?("Would you like to overwrite your existing #{GetToWork::ConfigFile.filename} file? [y/N]", :green)
             exit(0)
           end

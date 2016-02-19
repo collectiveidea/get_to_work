@@ -58,7 +58,9 @@ module GetToWork
       end
 
       def get_projects
-        api_client.projects
+        api_client.projects.sort do |x, y|
+          x[:name] <=> y[:name]
+        end
       end
 
       def story(story_id)

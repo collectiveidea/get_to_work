@@ -3,7 +3,7 @@ module GetToWork
     class Stop < GetToWork::Command
       def run
         if last_timer
-          @cli.say "\nStopping your current timer...\n\n", :green
+          shell.say "\nStopping your current timer...\n\n", :green
           result = harvest_service.stop_timer(last_timer)
 
           if result["id"]
@@ -11,7 +11,7 @@ module GetToWork
             config_file.save
           end
         else
-          @cli.say "\nYour timer has already been stopped.\n\n", :red
+          shell.say "\nYour timer has already been stopped.\n\n", :red
         end
       end
     end

@@ -2,13 +2,15 @@ require "keychain"
 
 module GetToWork
   class Command
+    include Thor::Shell
+    include GetToWork::Menu
+
     def self.run(opts = {})
       trap("SIGINT") { exit! }
       new(opts).run
     end
 
     def initialize(opts = {})
-      @cli = opts[:cli]
     end
 
     def config_file

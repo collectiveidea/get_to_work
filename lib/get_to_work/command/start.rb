@@ -5,11 +5,12 @@ module GetToWork
     class Start < GetToWork::Command
       def initialize(opts = {})
         super(opts)
+
         @pt_id = parse_pt_id(opts[:pt_id])
+        @force = opts[:force]
       end
 
       def run
-
         if @pt_id.nil?
           prompt_to_use_last_story
         end
@@ -31,6 +32,15 @@ module GetToWork
       def prompt_to_use_last_story
         last_story = config_file["last_story"]
 
+        if last_story && @force
+          @pt_id = last_story["id"]
+          shell.say "Using your last story: "
+          shell.say "  ##{last_story[:id.to_s]} ", [:bold, :cyan]
+          shell.say "#{last_story[:name.to_s]}", :magenta
+
+          return
+        end
+
         if last_story
           shell.say "\nWould you like to start a timer for your last story?", :green
           shell.say "  ##{last_story[:id.to_s]} ", [:bold, :cyan]
@@ -43,7 +53,7 @@ module GetToWork
             exit(0)
           end
         else
-          shell.say "Couldn't find your last started timer. Please specify a story id."
+          shell.say "Couldn't find your last started timer. Please specify a story id.", :red
           exit(0)
         end
       end

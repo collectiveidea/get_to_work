@@ -14,5 +14,10 @@ module GetToWork
     def stop
       GetToWork::Command::Stop.run
     end
+
+    desc "last_story", "returns the id of the last story started"
+    def last_story
+      GetToWork::Command::LastStory.run
+    end
   end
 end

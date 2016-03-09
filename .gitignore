@@ -8,3 +8,4 @@
 /spec/reports/
 /tmp/
 .get-to-work
+.rake_tasks

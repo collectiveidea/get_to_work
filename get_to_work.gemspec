@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "addressable", "~> 2.5"
   spec.add_dependency "thor", "~> 0.19"
   spec.add_dependency "nokogiri", "~> 1.7"
   spec.add_dependency "ruby-keychain", "~> 0.3.2"

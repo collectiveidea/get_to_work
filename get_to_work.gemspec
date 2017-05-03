@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = GetToWork::VERSION
   spec.authors       = ["Chris Rittersdorf"]
   spec.email         = ["chris.rittersdorf@collectiveidea.com"]
-  spec.required_ruby_version = ">= 2.2.0"
+  spec.required_ruby_version = ">= 2.4.0"
 
   spec.summary       = "Tag Harvest time entries with Pivotal Tracker information"
   spec.description   = "Tag Harvest time entries with Pivotal Tracker information"
@@ -34,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "bump"
   spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "aruba", "~> 0.14.2"
 end
